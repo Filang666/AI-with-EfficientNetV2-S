@@ -7,7 +7,6 @@ model = tf.keras.models.load_model('model.h5')
 
 # --- 2. Load and preprocess image ---
 img_path = 'new.png'
-# It's important to use the same target_size as during training (300x300)
 img = image.load_img(img_path, target_size=(300, 300))
 
 # Convert to array and add batch dimension (1, 300, 300, 3)

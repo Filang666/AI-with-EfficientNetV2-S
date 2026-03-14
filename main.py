@@ -3,8 +3,8 @@ from tensorflow.keras import layers, models, applications
 import numpy as np
 
 # --- 1. SETTINGS ---
-IMG_SIZE = (300, 300)  # High resolution for better details
-BATCH_SIZE = 32        # Optimized for 16GB VRAM
+IMG_SIZE = (300, 300)  
+BATCH_SIZE = 32       
 DATA_DIR = 'dataset' 
 
 # --- 2. DATA LOADING & SPLITTING (80/10/10) ---
