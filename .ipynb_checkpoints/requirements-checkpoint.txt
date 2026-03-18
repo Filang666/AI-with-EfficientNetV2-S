@@ -10,4 +10,4 @@ seaborn==0.13.1
 scikit-learn==1.4.0
 pytest==8.0.0
 httpx==0.26.0
-kagglehub==0.2.0
+kagglehub==1.0.0
