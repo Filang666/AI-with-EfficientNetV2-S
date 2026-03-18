@@ -13,3 +13,4 @@ venv/
 model.h5
 dataset/
 classes.txt
+reports/

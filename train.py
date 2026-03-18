@@ -1,6 +1,9 @@
 import tensorflow as tf
 from config import *
 from model_factory import build_efficientnet_model
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.metrics import confusion_matrix
 
 def run_training():
     # 1. Load Data
@@ -39,6 +42,37 @@ def run_training():
     model.fit(train_ds, validation_data=val_ds, epochs=FINE_TUNE_EPOCHS, callbacks=[early_stop])
 
     model.save(MODEL_PATH)
+    
+def save_plots(history, model, val_ds, class_names):
+    # 1. Training History Plot
+    plt.figure(figsize=(12, 4))
+    plt.subplot(1, 2, 1)
+    plt.plot(history.history['accuracy'], label='train_acc')
+    plt.plot(history.history['val_accuracy'], label='val_acc')
+    plt.title('Accuracy')
+    plt.legend()
+
+    plt.subplot(1, 2, 2)
+    plt.plot(history.history['loss'], label='train_loss')
+    plt.plot(history.history['val_loss'], label='val_loss')
+    plt.title('Loss')
+    plt.legend()
+    plt.savefig('reports/training_history.png')
+
+    # 2. Confusion Matrix
+    y_true = []
+    y_pred = []
+    for x, y in val_ds:
+        y_true.extend(np.argmax(y, axis=1))
+        preds = model.predict(x, verbose=0)
+        y_pred.extend(np.argmax(preds, axis=1))
+
+    cm = confusion_matrix(y_true, y_pred)
+    plt.figure(figsize=(10, 8))
+    sns.heatmap(cm, annot=True, fmt='d', xticklabels=class_names, yticklabels=class_names)
+    plt.xlabel('Predicted')
+    plt.ylabel('True')
+    plt.savefig('reports/confusion_matrix.png')
 
 if __name__ == "__main__":
     run_training()

@@ -1,24 +1,23 @@
-# Use an official Python runtime as a parent image
 FROM python:3.10-slim
 
-# Set the working directory in the container
 WORKDIR /app
 
-# Install system dependencies (needed for some ML libraries)
+# Install system dependencies for GUI-less plotting and ML libraries
 RUN apt-get update && apt-get install -y \
     build-essential \
     libgl1-mesa-glx \
+    libpng-dev \
+    libfreetype6-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements and install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application code
 COPY . .
 
-# Expose the port FastAPI runs on
+# Create reports directory to avoid permission issues
+RUN mkdir -p reports
+
 EXPOSE 8000
 
-# Command to run the application
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

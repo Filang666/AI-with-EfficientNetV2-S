@@ -23,6 +23,31 @@ This project provides a complete pipeline for training and deploying an image cl
 
 ---
 
+## 📊 Model Evaluation
+
+To ensure the model is robust and generalize well to unseen data, we track performance metrics and analyze the decision-making patterns.
+
+<table border="0">
+  <tr>
+    <td>
+      <p align="center"><b>Training Metrics (Accuracy & Loss)</b></p>
+      <img src="reports/training_history.png" width="500">
+    </td>
+    <td>
+      <p align="center"><b>Confusion Matrix</b></p>
+      <img src="reports/confusion_matrix.png" width="400">
+
+
+    </td>
+  </tr>
+</table>
+
+### Performance Insights:
+- **Convergence:** The model shows stable convergence with minimal gap between training and validation loss, indicating no significant overfitting.
+- **Reliability:** The Confusion Matrix confirms high precision across all classes, with minor confusion only between visually similar categories.
+- **Explainability:** We monitor these charts during the fine-tuning stage to ensure the learning rate is optimal for the **EfficientNetV2** backbone.
+
+
 ## 📦 Project Structure
 - `config.py`: Centralized configuration & constants
 - `model_factory.py`: Reusable model architecture logic
