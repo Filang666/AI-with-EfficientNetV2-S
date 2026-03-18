@@ -15,7 +15,7 @@ This project provides an end-to-end pipeline to identify manufacturing defects (
 ---
 
 ## 🛠 Tech Stack
-- **AI/ML:** TensorFlow 2.15, Keras, Scikit-learn
+- **AI/ML:** TensorFlow, Keras, Scikit-learn
 - **Backend:** FastAPI, Uvicorn, Pydantic
 - **DevOps:** Docker, Docker Compose, GitHub Actions
 - **Analysis:** Matplotlib, Seaborn, Numpy
@@ -29,11 +29,11 @@ We track performance metrics to ensure reliability in industrial environments.
   <tr>
     <td>
       <p align="center"><b>Training Metrics (Accuracy & Loss)</b></p>
-      <img src="reports/training_history.png" width="500">
+      <img src="reports/training_history.png" width="600">
     </td>
     <td>
       <p align="center"><b>Confusion Matrix</b></p>
-      <img src="reports/confusion_matrix.png" width="400">
+      <img src="reports/confusion_matrix.png" width="300">
     </td>
   </tr>
 </table>
