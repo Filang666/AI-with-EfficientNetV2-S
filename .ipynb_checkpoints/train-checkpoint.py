@@ -11,7 +11,7 @@ from config import (
     FINE_TUNE_EPOCHS, FINE_TUNE_LEARNING_RATE, 
     MODEL_PATH, CLASSES_FILE
 )
-from model_factory import build_efficientnet_model
+from model_factor import build_efficientnet_model
 
 def save_plots(history, model, val_ds, class_names):
     """
