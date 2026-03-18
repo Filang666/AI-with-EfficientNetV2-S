@@ -9,9 +9,6 @@ services:
     devices:
       - "/dev/kfd:/dev/kfd"
       - "/dev/dri:/dev/dri"
-    group_add:
-      - video
-      - render
     volumes:
       - ./reports:/app/reports
       - ./dataset:/app/dataset
