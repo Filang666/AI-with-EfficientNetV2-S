@@ -11,19 +11,6 @@ This project provides a complete pipeline for training and deploying an image cl
 - **Infrastructure as Code:** Fully containerized using Docker and Docker Compose.
 - **Automated Testing:** Robust test suite using Pytest and FastAPI TestClient.
 - **Dynamic Class Handling:** Automatically detects and maps classes from the dataset directory.
-# EfficientNetV2-S Image Classification Service
-
-A production-ready deep learning microservice for high-accuracy image classification. Built with **TensorFlow 2.x**, **FastAPI**, and **Docker**.
-
-## 🚀 Overview
-This project provides a complete pipeline for training and deploying an image classifier based on the **EfficientNetV2-S** architecture. It includes automated class management, fine-tuning logic, and a high-performance REST API for inference.
-
-### Key Features
-- **Transfer Learning & Fine-tuning:** Leverages ImageNet weights with a two-stage training process.
-- **Production-Ready API:** Built with FastAPI, featuring asynchronous processing and Pydantic validation.
-- **Infrastructure as Code:** Fully containerized using Docker and Docker Compose.
-- **Automated Testing:** Robust test suite using Pytest and FastAPI TestClient.
-- **Dynamic Class Handling:** Automatically detects and maps classes from the dataset directory.
 
 ---
 
