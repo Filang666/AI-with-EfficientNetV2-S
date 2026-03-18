@@ -1,31 +1,29 @@
-# EfficientNetV2-S Image Classification Service
+# Industrial Quality Control: Casting Defect Detection
 
-A production-ready deep learning microservice for high-accuracy image classification. Built with **TensorFlow 2.x**, **FastAPI**, and **Docker**.
+A production-ready Deep Learning microservice for automated surface defect detection in metal casting. Built with **TensorFlow 2.x**, **FastAPI**, and **Docker**.
 
 ## 🚀 Overview
-This project provides a complete pipeline for training and deploying an image classifier based on the **EfficientNetV2-S** architecture. It includes automated class management, fine-tuning logic, and a high-performance REST API for inference.
+This project provides an end-to-end pipeline to identify manufacturing defects (cracks, flaws) using Computer Vision. It transforms a raw industrial dataset into a scalable REST API, ready for integration into factory monitoring systems.
 
 ### Key Features
-- **Transfer Learning & Fine-tuning:** Leverages ImageNet weights with a two-stage training process.
-- **Production-Ready API:** Built with FastAPI, featuring asynchronous processing and Pydantic validation.
-- **Infrastructure as Code:** Fully containerized using Docker and Docker Compose.
-- **Automated Testing:** Robust test suite using Pytest and FastAPI TestClient.
-- **Dynamic Class Handling:** Automatically detects and maps classes from the dataset directory.
+- **Transfer Learning & Fine-tuning:** Two-stage training with EfficientNetV2-S for high accuracy.
+- **Automated Data Pipeline:** Custom script to fetch and merge industrial datasets via `kagglehub`.
+- **Production API:** FastAPI-based inference with Pydantic validation and async processing.
+- **CI/CD Integration:** Automated testing and linting via GitHub Actions.
+- **Dynamic Class Handling:** Automatically maps classes from the directory structure.
 
 ---
 
 ## 🛠 Tech Stack
-- **Deep Learning:** TensorFlow, Keras
-- **Web Framework:** FastAPI, Uvicorn
-- **Data Processing:** NumPy, Pillow, Pandas
-- **DevOps:** Docker, Docker Compose
-- **Testing:** Pytest, HTTPX
+- **AI/ML:** TensorFlow 2.15, Keras, Scikit-learn
+- **Backend:** FastAPI, Uvicorn, Pydantic
+- **DevOps:** Docker, Docker Compose, GitHub Actions
+- **Analysis:** Matplotlib, Seaborn, Numpy
 
 ---
 
 ## 📊 Model Evaluation
-
-To ensure the model is robust and generalize well to unseen data, we track performance metrics and analyze the decision-making patterns.
+We track performance metrics to ensure reliability in industrial environments.
 
 <table border="0">
   <tr>
@@ -36,60 +34,60 @@ To ensure the model is robust and generalize well to unseen data, we track perfo
     <td>
       <p align="center"><b>Confusion Matrix</b></p>
       <img src="reports/confusion_matrix.png" width="400">
-
-
     </td>
   </tr>
 </table>
 
 ### Performance Insights:
-- **Convergence:** The model shows stable convergence with minimal gap between training and validation loss, indicating no significant overfitting.
-- **Reliability:** The Confusion Matrix confirms high precision across all classes, with minor confusion only between visually similar categories.
-- **Explainability:** We monitor these charts during the fine-tuning stage to ensure the learning rate is optimal for the **EfficientNetV2** backbone.
+- **Convergence:** Minimal gap between training and validation loss, indicating no significant overfitting.
+- **Reliability:** High precision across all industrial classes, confirmed by the Confusion Matrix.
+- **Explainability:** Verification of model focus areas during the fine-tuning stage for optimal backbone performance.
 
+---
 
 ## 📦 Project Structure
-- `config.py`: Centralized configuration & constants
-- `model_factory.py`: Reusable model architecture logic
-- `train.py`: Training & fine-tuning pipeline
-- `main.py`: FastAPI production server
-- `test_main.py`: Integration & unit tests
-- `requirements.txt`: Fixed-version dependencies
-- `Dockerfile`: Container definition
-- `docker-compose.yml`: Multi-container orchestration
+- `config.py`: Centralized hyperparameters and file paths.
+- `model_factory.py`: Reusable model architecture logic.
+- `train.py`: Training pipeline with auto-generation of `classes.txt` and plots.
+- `main.py`: FastAPI production server.
+- `download_data.py`: Automated script for industrial dataset ingestion.
+- `test_main.py`: Integration tests for API and reports.
+- `.github/workflows/`: CI/CD configuration.
+
+---
 
 ## ⚡ Quick Start
 
 ### 1. Requirements
- Python 3.10+ or Docker
+- Python 3.10+
+- Docker & Docker Compose
 
-### 2. Installation
+### 2. Setup & Data Ingestion
 ```bash
-
+# Clone the repository
 git clone https://github.com
 cd AI-with-EfficientNetV2-S
+
+# Install dependencies
 pip install -r requirements.txt
+
+# Download and prepare the Industrial Dataset
+python download_data.py
 ```
 
 ### 3. Training
-
-Place your images in the dataset/ folder (organized by subfolders) and run:
-bash
 ```bash
 
 python train.py
 ```
 
-
 ### 4. Running with Docker (Recommended)
-Launch the inference service instantly:
-bash
 ```bash
 
-docker-compose up --build
+docker-compose up --build -d
 ```
+Access the interactive API docs at <http://localhost:8000/docs>.
 
-The API will be available at http://localhost:8000.
 ## 🧪 Testing
 Run the automated test suite to ensure service stability:
 ```bash
@@ -97,20 +95,7 @@ Run the automated test suite to ensure service stability:
 pytest test_main.py
 ```
 
-## 📡 API Documentation
-Once the service is running, explore the interactive **Swagger UI** at:
-http://localhost:8000/docs
-### Example Request (Python)
-
-```python
-
-import requests
-
-files = {'file': open('image.jpg', 'rb')}
-response = requests.post('http://localhost:8000/predict', files=files)
-print(response.json())
-```
-
 ## 👤 Author
- GitHub: @Filang666
- LinkedIn: 
+**Filang666**
+GitHub: @Filang666
+LinkedIn: 
