@@ -65,7 +65,7 @@ We track performance metrics to ensure reliability in industrial environments.
 ### 2. Setup & Data Ingestion
 ```bash
 # Clone the repository
-git clone https://github.com
+git clone https://github.com/Filang666/AI-with-EfficientNetV2-S.git
 cd AI-with-EfficientNetV2-S
 
 # Install dependencies
