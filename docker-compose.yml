@@ -1,11 +1,21 @@
 version: '3.8'
 
 services:
-  classifier-api:
+  api:
     build: .
+    container_name: industrial_cv_service
     ports:
       - "8000:8000"
+    devices:
+      - "/dev/kfd:/dev/kfd"
+      - "/dev/dri:/dev/dri"
+    group_add:
+      - video
+      - render
     volumes:
-      - .:/app
+      - ./reports:/app/reports
+      - ./dataset:/app/dataset
     environment:
-      - PYTHONUNBUFFERED=1
+      - TF_CPP_MIN_LOG_LEVEL=2
+      # - CUDA_VISIBLE_DEVICES=-1 
+    restart: always
