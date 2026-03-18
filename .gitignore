@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 .pytest_cache/
+.ipynb_checkpoints/
 
 # Environments
 .venv/
@@ -13,6 +14,5 @@ venv/
 model.h5
 dataset/
 classes.txt
-reports/
-!reports/training_history.png
-!reports/confusion_matrix.png
+
+
