@@ -14,3 +14,5 @@ model.h5
 dataset/
 classes.txt
 reports/
+!reports/training_history.png
+!reports/confusion_matrix.png
