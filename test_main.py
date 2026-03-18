@@ -1,45 +1,56 @@
-import pytest
 import io
+import pytest
 from fastapi.testclient import TestClient
 from PIL import Image
 from main import app
 
-client = TestClient(app)
+# Use a fixture to initialize the test client
+@pytest.fixture
+def client():
+    """Returns a FastAPI test client."""
+    with TestClient(app) as c:
+        yield c
 
-def create_test_image():
-    """Helper function to create a dummy image for testing."""
+@pytest.fixture
+def dummy_image():
+    """Generates a valid dummy JPEG image in memory."""
     file = io.BytesIO()
-    image = Image.new('RGB', (300, 300), color='red')
-    image.save(file, 'jpeg')
+    image = Image.new('RGB', (300, 300), color='blue')
+    image.save(file, format='JPEG')
     file.seek(0)
     return file
 
-def test_health_check():
-    """Tests the health endpoint."""
+# --- Tests ---
+
+def test_health_endpoint(client):
+    """Checks if the service and model are online."""
     response = client.get("/health")
     assert response.status_code == 200
-    assert "status" in response.json()
+    assert response.json()["status"] == "healthy"
 
-def test_predict_invalid_file_type():
-    """Verifies that the API rejects non-image files."""
-    files = {'file': ('test.txt', b'hello world', 'text/plain')}
+def test_predict_no_file(client):
+    """Ensures 422 error if no file is uploaded."""
+    response = client.post("/predict")
+    assert response.status_code == 422
+
+def test_predict_wrong_extension(client):
+    """Verifies rejection of unsupported file formats (e.g., .txt)."""
+    files = {'file': ('test.txt', b'not-an-image', 'text/plain')}
     response = client.post("/predict", files=files)
     assert response.status_code == 400
-    assert "detail" in response.json()
+    assert "Only JPG/PNG" in response.json()["detail"]
 
-def test_predict_success():
-    """Tests a successful prediction request."""
-    # This test requires model.h5 to be present to pass 200 OK
-    test_img = create_test_image()
-    files = {'file': ('test.jpg', test_img, 'image/jpeg')}
-    
+def test_predict_success(client, dummy_image):
+    """Full integration test for a successful prediction."""
+    files = {'file': ('test.jpg', dummy_image, 'image/jpeg')}
     response = client.post("/predict", files=files)
     
-    # If model is loaded, we expect 200. If model missing, 503 Service Unavailable.
+    # If the model is present (model.h5 exists)
     if response.status_code == 200:
         data = response.json()
         assert "class_name" in data
         assert "confidence" in data
         assert isinstance(data["confidence"], float)
     else:
+        # If model.h5 is missing, the API should return 503 (Service Unavailable)
         assert response.status_code == 503

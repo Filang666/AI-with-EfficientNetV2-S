@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Environments
+.venv/
+env/
+venv/
+
+# Deep Learning
+model.h5
+dataset/
+classes.txt
