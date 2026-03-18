@@ -86,6 +86,12 @@ python train.py
 
 docker-compose up --build -d
 ```
+
+### 5. Running with Uvicorn
+```bash
+
+ uvicorn main:app --reload
+```
 Access the interactive API docs at <http://localhost:8000/docs>.
 
 ## 🧪 Testing
