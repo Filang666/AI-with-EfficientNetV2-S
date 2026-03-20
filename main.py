@@ -1,4 +1,5 @@
 import io
+import os
 
 import numpy as np
 import tensorflow as tf
@@ -7,45 +8,63 @@ from PIL import Image
 from pydantic import BaseModel
 
 from config import IMG_SIZE, MODEL_PATH, get_class_names
+from model_factor import predict_with_ood
 
 app = FastAPI(title="AI Image Classifier")
 
-# Load assets once
+# Load assets
 CLASS_NAMES = get_class_names()
+model = None
+
 try:
-    model = tf.keras.models.load_model(MODEL_PATH)
+    if os.path.exists(MODEL_PATH):
+        model = tf.keras.models.load_model(MODEL_PATH)
+        # Pre-warmup
+        model(tf.zeros((1, *IMG_SIZE, 3)))
+        print(f"✅ Model loaded from {MODEL_PATH}")
 except Exception as e:
-    model = None
-    print(f"Error loading model: {e}")
+    print(f"❌ Error loading model: {e}")
 
 
-class Prediction(BaseModel):
+class PredictionResponse(BaseModel):
     label: str
     confidence: float
+    entropy: float
+    is_ood: bool
 
 
-@app.post("/predict", response_model=Prediction)
+@app.post("/predict", response_model=PredictionResponse)
 async def predict(file: UploadFile = File(...)):
+    """Predicts image class and detects Out-of-Distribution data."""
     if not file.content_type.startswith("image/"):
-        raise HTTPException(400, "Invalid file type")
+        raise HTTPException(status_code=400, detail="Invalid file type.")
+
+    if model is None:
+        raise HTTPException(status_code=503, detail="Model is not ready.")
 
     try:
         content = await file.read()
         img = Image.open(io.BytesIO(content)).convert("RGB").resize(IMG_SIZE)
-        img_array = np.expand_dims(
-            tf.keras.preprocessing.image.img_to_array(img), axis=0
-        )
+        img_array = tf.keras.preprocessing.image.img_to_array(img)
+        img_array = np.expand_dims(img_array, axis=0)
+        img_tensor = tf.convert_to_tensor(img_array, dtype=tf.float32)
 
-        preds = model.predict(img_array, verbose=0)[0]
-        idx = np.argmax(preds)
+        # Unified OOD logic
+        idx, conf, entropy, is_ood = predict_with_ood(model, img_tensor)
 
-        return Prediction(
-            label=CLASS_NAMES[idx], confidence=round(float(preds[idx]) * 100, 2)
+        if is_ood:
+            label = "Unknown / Out-of-Distribution"
+        else:
+            label = CLASS_NAMES[idx] if idx < len(CLASS_NAMES) else "Unknown"
+
+        return PredictionResponse(
+            label=label, confidence=conf, entropy=round(entropy, 4), is_ood=is_ood
         )
     except Exception as e:
-        raise HTTPException(500, f"Processing error: {e}")
+        raise HTTPException(status_code=500, detail=f"Inference error: {e}")
 
 
 @app.get("/health")
-def health():
+async def health():
+    """Health check endpoint."""
     return {"status": "ok", "model_ready": model is not None}
