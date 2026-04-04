@@ -1,6 +1,6 @@
 # Industrial Quality Control: Casting Defect Detection
 [![Python 3.13+](https://img.shields.io/badge/python-3.13-blue.svg)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.111-green.svg)](https://fastapi.tiangolo.com/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.110-green.svg)](https://fastapi.tiangolo.com/)
 [![TensorFlow](https://img.shields.io/badge/TensorFlow-2.15+-orange.svg)](https://www.tensorflow.org/)
 [![Docker](https://img.shields.io/badge/docker-✓-2496ED.svg)](https://www.docker.com/)
 
